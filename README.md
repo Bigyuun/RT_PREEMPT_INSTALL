@@ -127,7 +127,7 @@ For additional kernel configurations check [My-Xenomai-Installation](https://git
   Restart your computer start with non-rt kernel. Open your terminal:
   ### Step 1 - Strip the kernel modules
   
-    cd /lib/modules/5.9.1-rt20
+    cd /lib/modules/5.15.79-rt54
     sudo find . -name *.ko -exec strip --strip-unneeded {} +
 
   ### Step 2 - Change the initramfs compression
@@ -141,6 +141,6 @@ For additional kernel configurations check [My-Xenomai-Installation](https://git
   save and exit (CTRL+X and Y and Enter).
   ### Step 3 - Update initramfs
   
-    sudo update-initramfs -u -k 5.9.1-rt20
+    sudo update-initramfs -u -k 5.15.79-rt54
     sudo update-grub2
  ### --------------------------------------------------------------------------------
