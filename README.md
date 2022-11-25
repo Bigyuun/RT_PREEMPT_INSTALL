@@ -32,13 +32,13 @@ sudo apt-get install kernel-package fakeroot zlib1g-dev bin86 g++ bison cpufrequ
      mkdir sources
      cd sources
 #### Download the kernel source and download corresponding RT patch. Note that patch has same version 5.9.1 as kernel.
-     wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.9.1.tar.xz
-     wget https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/5.9/patch-5.9.1-rt20.patch.xz
-     xz -cd linux-5.9.1.tar.xz | tar xvf -
-     cd linux-5.9.1
-     xzcat ../patch-5.9.1-rt20.patch.xz | patch -p1
-     sudo mv ../linux-5.9.1 /usr/src/ -f
-     cd /usr/src/linux-5.9.1
+     wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.15.79.tar.xz
+     wget https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/5.15/patch-5.15.79-rt54.patch.xz
+     xz -cd linux-5.15.79.tar.xz | tar xvf -
+     cd linux-5.15.79
+     xzcat ../patch-5.15.79-rt54.patch.xz | patch -p1
+     sudo mv ../linux-5.15.79 /usr/src/ -f
+     cd /usr/src/linux-5.15.79
      
 #### Now it is time for kernel configuration. Every kernel configuration parameter might have effect on real-time performance, you must read kernel configuration parameters and what they means. A good resource is [Kernel Config Documentation](https://www.kernelconfig.io/index.html). You can search any configuration settings and learn about the dependencies.
 
@@ -46,7 +46,18 @@ sudo apt-get install kernel-package fakeroot zlib1g-dev bin86 g++ bison cpufrequ
 
 ## In menu that will show up, we select;
 
-    Processor type and features -> Preemption Model -> Fully Preemptible Kernel (RT).
+    General Setup -> Preemption Model (Fully Preemptible Kernel (Real-Time))
+                     (x) Fully Preemptible Kernel (Real-Time)
+    General Setup -> Timers subsystem
+                     [*] High Resolution Timer Support
+    General Setup -> Timers subsystem -> Timer tick handling(Full dynticks system (tickless))
+                     (X) Full dynticks system (tickless)
+                     
+    Processor type and features -> Timer frequency (1000 Hz)
+                                   (X) 1000 HZ
+    Power management and ACPI options -> CPU Frequency scaling -> Default CPUFreq governor (<choice> [=y])
+                                         (X) performance
+    
  
  Alternatively you can edit .config file, which includes all settings that you see in menuconfig window.
 <!--  When measuring system latency all kernel debug options should be turned off. They require much overhead and distort the measurement result. Examples for those debug mechanism are:
